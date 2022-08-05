@@ -30,11 +30,13 @@ console.log('example task:', processFirstItem(['foo','bar'],function(str){return
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
-  
+  counter1 uses closure and block scope, and counter2 uses global scope since count is declared outside of any function.
   2. Which of the two uses a closure? How can you tell?
-  
+  counter1 uses closure because it has a nested function.
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+  counter1 would be better for a counter that is local to only that function. counter2 would be better in the case that the count variable
+  being declared would be accessed by another function or object.
 */
 
 // counter1 code
@@ -64,10 +66,10 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
+function inning(){
+    return Math.round(Math.random()*2);
 }
-
+console.log(inning());
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
 Use the finalScore function below to do the following:
@@ -83,9 +85,31 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*Code Here*/){
-  /*Code Here*/
+function finalScore(inningCount, inningsPlayed){
+ 
+  function counter(){
+    let count  = inningCount();
+
+      function increment(){
+        count += inningCount();
+        return count;
+      }
+    for(let i = 0; i <= inningsPlayed; i++){
+      increment();
+    } 
+    return increment;
+  }
+  let homeCounter = counter();
+  let awayCounter = counter();
+ 
+  const score = {
+  Home: homeCounter(),
+  Away: awayCounter()
+ }
+  return score;
 }
+
+console.log(finalScore(inning, 9));
 
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
@@ -101,9 +125,12 @@ For example: invoking getInningScore(inning) might return this object:
   */
 
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
-
+function getInningScore(inning) {
+  const score = {
+    Home: inning(), 
+    Away: inning()
+  }
+  return score;
 }
 
 
